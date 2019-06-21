@@ -1,6 +1,77 @@
-Copyright (C) 2015, Bjarni J. Vilhjalmsson (bjarni.vilhjalmsson@gmail.com)
+# COPD LDPred
+This is a wrapper around the LDPred library to deal with UKBioBank data.
 
-# LDpred #
+Usage details: 
+
+**NOTE**: The version of python this will work with is python 2.7.10. The older version of python is due to the fact that LDPred breaks upon converting to python3 (and the updated form of LDPred contains newer functions that do not produce the same output as the original LDPred).
+
+### Installation instructions
+
+**Dependency Setup**
+1. Create a virtual environment `virtualenv venv -p=path/to/python2.7`
+2. Activate virtual environment `source venv/bin/activate`
+3. Install dependencies with `pip install requirements.txt`
+
+Virtual environments are highly recommended since it isolates dependencies to the local packages. You can install the following dependencies with pip if you do not wish to use a virtual environment: 
+
+```
+h5py==2.9.0
+numpy==1.16.4
+plinkio==0.9.7
+scipy==1.2.2
+six==1.12.0
+```
+
+**Running**
+
+The following dependencies are needed in order to run the script.  
+
+```
+usage: run-copd-ldpred.py [-h] [--tf TF] [--vf VF] [--N N] [--p P] [--R R]
+                          [--o O]
+
+optional arguments:
+  -h, --help  show this help message and exit
+  --tf TF     relative path to training file (.bed, .bim, and .fam files
+              needed in same location, omit file-extention)
+  --vf VF     relative path to validation/testing file (.bed, .bim, and .fam
+              files needed in same location, omit file-extention)
+  --N N       number of individuals
+  --p P       comma separated values of p to test with (default
+              1.0,0.3,0.1,0.03,0.01,0.003,0.001,0.0003,0.0001)
+  --R R       LD pred radius
+  --o O       output directory
+```
+
+Here is an example of the command:
+
+```
+python run-copd-ldpred.py \
+    --tf plink-data/strict_training_NHW_ukdx_keep \
+    --vf plink-data/strict_validation_NHW_ukdx_keep \
+    --N 4224 \
+    --p 1.0,0.3 \
+    --R 50 \
+    --o testout
+```
+
+
+Note that when any `tf` or `vf` files are referenced, the script searches for `.bed, .bim, .fam` files that have the prefix. the `N` number can be found by getting the association statistics for the training data.
+
+**Saving output**
+
+All output of the script will go to the console. In order to save it, you can pipe the command into a file or even pipe to the console and a file at the same time by piping to `tee` as follows:
+
+```
+python run-copd-ldpred.py \
+    --tf plink-data/strict_training_NHW_ukdx_keep\
+    --vf plink-data/strict_validation_NHW_ukdx_keep\
+    --N 4224 --p 1.0 --R 50\
+    --o testout | tee test-output.txt
+```
+
+## Below is the original documentation for LDPred:
+
 
 
 LDpred is a Python based software package that adjusts GWAS summary statistics
