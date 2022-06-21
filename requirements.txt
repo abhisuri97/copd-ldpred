@@ -1,5 +1,5 @@
 h5py==2.9.0
-numpy==1.16.4
+numpy==1.22.0
 plinkio==0.9.7
 scipy==1.2.2
 six==1.12.0
